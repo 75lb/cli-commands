@@ -4,18 +4,58 @@
 [![Dependency Status](https://david-dm.org/75lb/cli-commands.svg)](https://david-dm.org/75lb/cli-commands)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
 
+# cli-commands
+
+A convention for building command-driven CLI apps.
+
+## Synopsis
+
+```js
+const CliCommands = require('cli-commands')
+
+const validCommands = [
+  { name: null },
+  { name: 'show', command: require('./command/show').create() },
+  { name: 'serve', command: require('./command/serve').create() },
+  { name: 'help', command: require('./command/help').create() }
+]
+
+const cliCommands = new CliCommands(validCommands)
+```
+
+Where each command looks something like this:
+
+```js
+class ShowCommand {
+  optionDefinitions () {
+    /* command has a --help option */
+    return [
+      { name: 'help', type: Boolean, alias: 'h' }
+    ]
+  }
+  description () { return 'Print some information.' }
+  usage () {
+    return [
+      { header: 'Options', optionList: this.optionDefinitions() }
+    ]
+  }
+  cliView (data) {
+    return JSON.stringify(data, null, '  ')
+  }
+  execute (options) {
+    // do something sync or async
+  }
+  static create () {
+    return new this(...arguments)
+  }
+}
+```
+
+# API Reference
+
 <a name="module_cli-commands"></a>
 
 ## cli-commands
-A convention for building command-driven CLI apps.
-
-**Example**  
-```js
-const cliCommands = new CliCommmands([
- { name: 'send', description: 'Send something', command: require('send-command').create() },
- { name: 'logs', description: 'View the logs', command: require('logs-command').create() },
-])
-```
 
 * [cli-commands](#module_cli-commands)
     * [CliCommmands](#exp_module_cli-commands--CliCommmands) ⏏
@@ -36,4 +76,4 @@ const cliCommands = new CliCommmands([
 
 * * *
 
-&copy; 2016 Lloyd Brookes \<75pound@gmail.com\>. Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).
+&copy; 2016-17 Lloyd Brookes \<75pound@gmail.com\>. Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).
