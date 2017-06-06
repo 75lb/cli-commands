@@ -10,7 +10,9 @@ class Commands extends Map {
   start (argv) {
     /* parse command */
     const commandLineCommands = require('command-line-commands')
-    let { command, argv: remainingArgv } = commandLineCommands(Array.from(this.keys()), argv)
+    const cli = commandLineCommands(Array.from(this.keys()), argv)
+    const command = cli.command
+    const remainingArgv = cli.argv
     const cmd = this.get(command)
 
     let options = {}

@@ -5,7 +5,6 @@
   "description": "cli-commands",
   "repository": "https://github.com/75lb/cli-commands.git",
   "license": "MIT",
-  "main": "cli-commands.js",
   "keywords": [
     "command-line-commands",
     "command-line",
