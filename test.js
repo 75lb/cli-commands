@@ -30,3 +30,32 @@ runner.test('one non-default command', function () {
   const result = commands.start()
   a.strictEqual(result, 'one')
 })
+
+runner.test('sub-command', function () {
+  class Command {
+    execute () {
+      return 'one'
+    }
+  }
+  class SubCommand {
+    execute () {
+      return 'sub'
+    }
+  }
+  class NoSubCommand {
+    execute () {
+      return 'no-sub'
+    }
+  }
+  const commands = new CliCommands()
+  const subCommands = new CliCommands()
+  commands.add('command', subCommands)
+  subCommands.add(null, NoSubCommand)
+  subCommands.add('sub', SubCommand)
+  process.argv = [ 'node', 'script', 'command']
+  let result = commands.start()
+  a.strictEqual(result, 'no-sub')
+  process.argv = [ 'node', 'script', 'command', 'sub']
+  result = commands.start()
+  a.strictEqual(result, 'sub')
+})

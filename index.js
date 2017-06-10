@@ -15,18 +15,26 @@ class Commands extends Map {
     const remainingArgv = cli.argv
     const cmd = this.get(command)
 
-    let options = {}
-    if (cmd.optionDefinitions) {
-      const commandLineArgs = require('command-line-args')
-      const options = commandLineArgs(cmd.optionDefinitions(), { argv })
+    if (cmd instanceof this.constructor) {
+      return cmd.start(remainingArgv)
+    } else {
+      let options = {}
+      if (cmd.optionDefinitions) {
+        const commandLineArgs = require('command-line-args')
+        const options = commandLineArgs(cmd.optionDefinitions(), { argv })
+      }
+      return cmd.execute(options, remainingArgv)
     }
-    return cmd.execute(options, remainingArgv)
   }
 
   add (name, CommandClass) {
-    const cmd = new CommandClass()
-    cmd._commands = this
-    this.set(name, cmd)
+    if (CommandClass instanceof this.constructor) {
+      this.set(name, CommandClass)
+    } else {
+      const cmd = new CommandClass()
+      cmd._commands = this
+      this.set(name, cmd)
+    }
   }
 }
 
