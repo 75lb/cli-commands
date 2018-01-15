@@ -21,7 +21,7 @@ class Commands extends Map {
       let options = {}
       if (cmd.optionDefinitions) {
         const commandLineArgs = require('command-line-args')
-        const options = commandLineArgs(cmd.optionDefinitions(), { argv })
+        options = commandLineArgs(cmd.optionDefinitions(), { argv })
       }
       return cmd.execute(options, remainingArgv)
     }
