@@ -1,4 +1,3 @@
-'use strict'
 const TestRunner = require('test-runner')
 const CliCommands = require('./')
 const a = require('assert')

@@ -1,4 +1,3 @@
-'use strict'
 /**
  * @module cli-commands
  */
@@ -21,7 +20,7 @@ class Commands extends Map {
       let options = {}
       if (cmd.optionDefinitions) {
         const commandLineArgs = require('command-line-args')
-        options = commandLineArgs(cmd.optionDefinitions(), { argv })
+        options = commandLineArgs(cmd.optionDefinitions(), { argv: remainingArgv })
       }
       return cmd.execute(options, remainingArgv)
     }
